@@ -8,6 +8,7 @@
 
 #include "LAMMPSFileRunner.h"
 #include "MooseUtils.h"
+#include "Function.h"
 #include <sstream>
 
 registerMooseObject("MagpieApp", LAMMPSFileRunner);
@@ -85,6 +86,10 @@ LAMMPSFileRunner::updateParticleList()
 
   // update the mapping to mesh if mesh has changed or ...
   mapMDParticles();
+
+  // update the granular candidates as well if necessary
+  if (_granular)
+    updateElementGranularVolumes();
 }
 
 void

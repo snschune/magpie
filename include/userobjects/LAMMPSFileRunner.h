@@ -12,6 +12,7 @@
 #include "MDRunBase.h"
 
 class LAMMPSFileRunner;
+class Function;
 
 template <>
 InputParameters validParams<LAMMPSFileRunner>();

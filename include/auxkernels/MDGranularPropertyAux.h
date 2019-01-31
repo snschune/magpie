@@ -6,30 +6,36 @@
 /*                        ALL RIGHTS RESERVED                         */
 /**********************************************************************/
 
-#ifndef MDNPARTICLEAUX_H
-#define MDNPARTICLEAUX_H
+#ifndef MDGRANULARPROPERTYAUX_H
+#define MDGRANULARPROPERTYAUX_H
 
 #include "AuxKernel.h"
 
 // forward declarations
 class MDRunBase;
-class MDNParticleAux;
+class MDGranularPropertyAux;
 
 template <>
-InputParameters validParams<MDNParticleAux>();
+InputParameters validParams<MDGranularPropertyAux>();
 
-class MDNParticleAux : public AuxKernel
+class MDGranularPropertyAux : public AuxKernel
 {
 public:
-  MDNParticleAux(const InputParameters & params);
-  virtual ~MDNParticleAux() {}
+  MDGranularPropertyAux(const InputParameters & params);
+  virtual ~MDGranularPropertyAux() {}
 
   virtual Real computeValue();
+
+  static MooseEnum mdAveragingType();
 
 protected:
   const MDRunBase & _md_uo;
 
-  std::vector<unsigned int> _particles;
+  /// ID of the desired MD property
+  unsigned int _property_id;
+
+  /// property value that is computed only on qp = 0
+  Real _property_value;
 };
 
-#endif // MDNPARTICLEAUX_H
+#endif // MDGRANULARPROPERTYAUX_H

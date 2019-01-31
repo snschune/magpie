@@ -30,5 +30,7 @@ MDNParticleAux::MDNParticleAux(const InputParameters & parameters)
 Real
 MDNParticleAux::computeValue()
 {
-  return _md_uo.elemParticles(_current_elem->unique_id()).size();
+  _particles = {};
+  _md_uo.elemParticles(_current_elem->unique_id(), _particles);
+  return _particles.size();
 }
