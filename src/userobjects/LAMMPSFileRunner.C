@@ -336,7 +336,7 @@ LAMMPSFileRunner::readLAMMPSFileHistory(std::pair<FileName, FileName> filenames,
         largest_column = _prop_columns[i];
 
     if (largest_column >= elements.size())
-      mooseError("Error reading ", filename, " on line ", line);
+      mooseError("Error reading ", filenames.first, " on line ", line_before);
 #endif
 
     Point pos_before;
@@ -364,7 +364,7 @@ LAMMPSFileRunner::readLAMMPSFileHistory(std::pair<FileName, FileName> filenames,
 
     // we have determined largest_column in DEBUG so we can use it in mooseAssert
     mooseAssert(largest_column < elements.size(),
-                "Error reading " << filename << " on line " << line);
+                "Error reading " << filenames.second << " on line " << line_after);
 
     Point pos_after;
     for (unsigned int i = 0; i < _dim; ++i)
