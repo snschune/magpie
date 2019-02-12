@@ -228,8 +228,11 @@ MDRunBase::updateElementGranularVolumes()
     // construct this element's overlap object
     ElemType t = elem->type();
     OVERLAP::Hexahedron hex = overlapUnitHex();
+    OVERLAP::Tetrahedron tet = overlapUnitTet();
     if (t == HEX8)
       hex = overlapHex(elem);
+    else if (t == TET4)
+      tet = overlapTet(elem);
     else
       mooseError("Element type ", t, "not implemented");
 
@@ -241,12 +244,14 @@ MDRunBase::updateElementGranularVolumes()
       OVERLAP::Sphere sph(OVERLAP::vector_t{_md_particles.pos[k](0),
                                             _md_particles.pos[k](1),
                                             _md_particles.pos[k](2)},
-                          _md_particles.properties[k][7]);
+                                            _md_particles.properties[k][7]);
 
       // compute the overlap
       Real ovlp = 0.0;
       if (t == HEX8)
         ovlp = OVERLAP::overlap(sph, hex);
+      else if (t == TET4)
+        ovlp = OVERLAP::overlap(sph, tet);
 
       // if the overlap is larger than 0, make entry in _elem_granular_volumes
       if (ovlp > 0.0)
@@ -296,4 +301,29 @@ MDRunBase::overlapUnitHex() const
   OVERLAP::vector_t v6{1, 1, 1};
   OVERLAP::vector_t v7{-1, 1, 1};
   return OVERLAP::Hexahedron{v0, v1, v2, v3, v4, v5, v6, v7};
+}
+
+OVERLAP::Tetrahedron
+MDRunBase::overlapTet(const Elem * elem) const
+{
+  Point p;
+  p = elem->point(0);
+  OVERLAP::vector_t v0{p(0), p(1), p(2)};
+  p = elem->point(1);
+  OVERLAP::vector_t v1{p(0), p(1), p(2)};
+  p = elem->point(2);
+  OVERLAP::vector_t v2{p(0), p(1), p(2)};
+  p = elem->point(3);
+  OVERLAP::vector_t v3{p(0), p(1), p(2)};
+  return OVERLAP::Tetrahedron{v0, v1, v2, v3};
+}
+
+OVERLAP::Tetrahedron
+MDRunBase::overlapUnitTet() const
+{
+  OVERLAP::vector_t v0{0, 0, 0};
+  OVERLAP::vector_t v1{1, 0, 0};
+  OVERLAP::vector_t v2{0, 1, 0};
+  OVERLAP::vector_t v3{0, 0, 1};
+  return OVERLAP::Tetrahedron{v0, v1, v2, v3};
 }

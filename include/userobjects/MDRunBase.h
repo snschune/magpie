@@ -90,6 +90,12 @@ protected:
   /// helper function to contruct unit hexahedron
   OVERLAP::Hexahedron overlapUnitHex() const;
 
+  /// helper function to contruct tetrahedron
+  OVERLAP::Tetrahedron overlapTet(const Elem * elem) const;
+
+  /// helper function to construct unit tetrahedron
+  OVERLAP::Tetrahedron overlapUnitTet() const;
+
   /// Properties that are requested from MD simulation
   MultiMooseEnum _properties;
 
